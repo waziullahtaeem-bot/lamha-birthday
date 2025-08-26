@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday, Lamha 🌙💙</title>
+  <meta name="description" content="A little website made with love by Wazi for Lamha." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🌙</text></svg>">
+  <style>
+    :root{
+      --bg:#0b1220;        /* night blue */
+      --bg2:#0a0f1a;       /* deeper blue */
+      --fg:#e6f0ff;        /* soft white */
+      --muted:#a7b7d9;     /* muted text */
+      --accent:#7aa2ff;    /* moonlight blue */
+      --heart:#ff6b9e;     /* rosy */
+      --card: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.12);
+      --shadow: 0 10px 40px rgba(0,0,0,0.35);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 800px at 70% -10%, #16233b 0%, var(--bg) 40%, var(--bg2) 100%);
+      color:var(--fg);
+      font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,Apple Color Emoji,Segoe UI Emoji;
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+    a{color:var(--accent);text-decoration:none}
+
+    /* --- Global UI --- */
+    .container{width: min(1100px, 94vw); margin: 0 auto;}
+    .card{background:var(--card); backdrop-filter: blur(6px); border:1px solid rgba(255,255,255,0.08); border-radius: var(--radius); box-shadow: var(--shadow)}
+    .btn{display:inline-flex; align-items:center; gap:.55rem; padding:.85rem 1.1rem; border-radius:16px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.06); color:var(--fg); cursor:pointer; transition:.2s transform,.2s filter,.2s background;}
+    .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.1)}
+    .btn.primary{background:linear-gradient(135deg, var(--accent), #9ec2ff); color:#0b1220; border-color:transparent;}
+    .pill{display:inline-block; padding:.35rem .7rem; border-radius:999px; background:rgba(122,162,255,.15); border:1px solid rgba(122,162,255,.35); color:#dbe6ff; font-size:.8rem}
+
+    header.hero{position:relative; min-height:100vh; display:grid; place-items:center; text-align:center;}
+    #rain{position:absolute; inset:0; z-index:0;}
+    .stars{position:absolute; inset:0; background-image: radial-gradient(1px 1px at 10% 20%, #fff6 0, #fff0 60%), radial-gradient(1px 1px at 80% 30%, #fff6 0, #fff0 60%), radial-gradient(1px 1px at 50% 60%, #fff6 0, #fff0 60%); opacity:.7; z-index:0}
+
+    .hero-inner{position:relative; z-index:2; padding: 7rem 1rem 5rem}
+    .title{font-family:"Playfair Display",serif; font-weight:700; letter-spacing:.4px; font-size: clamp(2.2rem, 5vw + .5rem, 4.5rem); line-height:1.08; margin: 0 0 .6rem}
+    .subtitle{font-size: clamp(1rem, 1.6vw + .6rem, 1.4rem); color:var(--muted); margin:.2rem auto 1.4rem; max-width: 42ch}
+
+    .cta{display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:1.3rem}
+
+    /* Sections */
+    section{padding: 72px 0}
+    h2{font-family:"Playfair Display",serif; font-size: clamp(1.4rem, 3vw + .4rem, 2.2rem); margin:0 0 1rem}
+    .grid{display:grid; gap:22px}
+
+    /* Letter */
+    .letter{padding:28px;}
+    .letter p{margin:0 0 1rem}
+
+    /* Gallery */
+    .gallery{display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:14px}
+    .gallery img{width:100%; height:220px; object-fit:cover; border-radius:18px; border:1px solid rgba(255,255,255,.15); cursor:pointer; transition:.2s transform,.25s box-shadow}
+    .gallery img:hover{transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,.35)}
+
+    /* Timeline */
+    .timeline{position:relative; padding-left:22px}
+    .timeline:before{content:""; position:absolute; left:10px; top:0; bottom:0; width:2px; background:linear-gradient(var(--accent), transparent)}
+    .event{margin:0 0 20px; padding:16px 18px; border-radius:16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1)}
+    .event .when{font-size:.86rem; color:#c8d8ff}
+
+    /* Footer */
+    footer{padding:40px 0 80px; text-align:center; color:var(--muted)}
+
+    /* Modal / Lightbox */
+    .modal{position:fixed; inset:0; display:none; place-items:center; background:rgba(5,8,14,.75); backdrop-filter: blur(4px); z-index:50}
+    .modal.show{display:grid}
+    .modal .content{width:min(900px,90vw); max-height:85vh; overflow:auto;}
+    .close{position:absolute; top:22px; right:22px; background:rgba(255,255,255,.1)}
+
+    /* Secret */
+    .secret-trigger{position:fixed; right:18px; bottom:18px; z-index:30;}
+    .secret-card{padding:22px}
+    .secret-input{display:flex; gap:10px; margin-top:12px}
+    .secret-input input{flex:1; padding:.8rem 1rem; border-radius:12px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.05); color:var(--fg)}
+
+    /* Music */
+    .music-toggle{position:fixed; left:18px; bottom:18px; z-index:30}
+
+    /* Responsive tweaks */
+    @media (min-width: 800px){
+      .grid.cols-2{grid-template-columns:1.1fr 1fr}
+      .grid.cols-3{grid-template-columns: repeat(3, 1fr)}
+    }
+  </style>
+</head>
+<body>
+  <!-- Rain Canvas & Stars Background -->
+  <canvas id="rain" aria-hidden="true"></canvas>
+  <div class="stars" aria-hidden="true"></div>
+
+  <!-- Music (replace src with your own mp3 link if you want) -->
+  <audio id="bgm" loop>
+    <!-- Example: <source src="your-music.mp3" type="audio/mpeg"> -->
+  </audio>
+
+  <header class="hero">
+    <div class="hero-inner container">
+      <span class="pill">9 September • Happy Birthday</span>
+      <h1 class="title">Happy Birthday, <span style="color:var(--accent)">Lamha</span> 🌙</h1>
+      <p class="subtitle" id="typewriter" aria-live="polite">You are my favorite person, my moonlight in the rain.</p>
+      <div class="cta">
+        <button class="btn primary" onclick="openLetter()">Open Birthday Letter</button>
+        <a class="btn" href="#memories">Memories</a>
+        <a class="btn" href="#journey">Our Journey</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Letter Section -->
+    <section id="letter" class="card letter">
+      <h2>My Letter to You</h2>
+      <p>Oh you, my sunshine. Oh you, my dazzling light. Missing you is the hardest part of my day. Your laughter floats in front of my eyes. Your smile is the only desire I've ever known to live for. Your enchanting beauty is tangled with my soul.</p>
+      <p>I pray that Allah always keeps you safe and smiling. Thank you for being my world. — <b>Wazi</b></p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px">
+        <button class="btn" onclick="copyLetter(this)">Copy letter</button>
+        <a class="btn" href="#poems">Jump to Poems</a>
+      </div>
+    </section>
+
+    <!-- Poems Section -->
+    <section id="poems">
+      <div class="grid cols-2">
+        <div class="card" style="padding:22px">
+          <h2>Poems for Lamha</h2>
+          <p style="margin-top:0">(Replace with your own lines)
+          </p>
+          <ul>
+            <li>In the rain, our names found shelter.</li>
+            <li>Your smile — my favorite sunrise at midnight.</li>
+            <li>Between dua and destiny, I found you.</li>
+          </ul>
+        </div>
+        <div class="card" style="padding:22px">
+          <h2>Little Things I Love</h2>
+          <ul>
+            <li>How you say my name when you're shy.</li>
+            <li>The way your eyes hold galaxies.</li>
+            <li>Your courage, even when you don't feel brave.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="memories">
+      <h2>Memories & Symbols</h2>
+      <div class="gallery" id="gallery"></div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="journey">
+      <h2>Our Journey</h2>
+      <div class="timeline" id="timeline"></div>
+    </section>
+  </main>
+
+  <footer>
+    Made with 🤍 by <b>Wazi</b> • For <b>Lamha</b> • <span id="year"></span>
+  </footer>
+
+  <!-- Lightbox Modal -->
+  <div class="modal" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="btn close" onclick="closeLightbox()">Close ✕</button>
+    <div class="content card" style="padding:0; overflow:hidden">
+      <img id="lightbox-img" alt="Memory" style="display:block; width:100%; height:auto;" />
+      <div style="padding:12px 16px; display:flex; justify-content:space-between; align-items:center">
+        <span id="lightbox-caption" style="color:#cfe0ff"></span>
+        <button class="btn" onclick="prevImg()">◀</button>
+        <button class="btn" onclick="nextImg()">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secret Button -->
+  <button class="btn music-toggle" id="musicBtn" title="Music on/off">♪ Music</button>
+  <button class="btn secret-trigger" id="secretBtn" title="Secret page">🌙 Secret</button>
+
+  <!-- Secret Modal -->
+  <div class="modal" id="secret" role="dialog" aria-modal="true" aria-label="Secret message">
+    <button class="btn close" onclick="toggleSecret(false)">Close ✕</button>
+    <div class="content card secret-card">
+      <h2>Moonlight Secret</h2>
+      <p>Enter <b>0909</b> to unlock a private note.</p>
+      <div class="secret-input">
+        <input id="secretCode" placeholder="Enter code…" inputmode="numeric" maxlength="8" />
+        <button class="btn primary" onclick="unlockSecret()">Unlock</button>
+      </div>
+      <div id="secretNote" style="display:none; margin-top:16px">
+        <p>To my dearest Lamha,
+        Even if the world forgets, I will remember. Even if the night is silent, I will still call your name in my heart. You are my answered dua.
+        </p>
+        <p>— Yours, Wazi</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Utilities / Data you can EDIT =====
+    const GALLERY = [
+      {src:'https://images.unsplash.com/photo-1458442310124-dde6edb43d10?q=80&w=1200&auto=format&fit=crop', caption:'The rain that started it all'},
+      {src:'https://images.unsplash.com/photo-1496302662116-85c3c1b9efc2?q=80&w=1200&auto=format&fit=crop', caption:'Moon watching night'},
+      {src:'https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1200&auto=format&fit=crop', caption:'Your favorite blue'},
+      {src:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop', caption:'Footsteps after rain'},
+    ];
+
+    const TIMELINE = [
+      {when:'April 10, 2025', text:'A dua under the night sky.'},
+      {when:'April 11, 2025', text:'Storm through the washroom window — a sign.'},
+      {when:'April 16, 2025', text:'Shared an umbrella, then ran in the rain.'},
+      {when:'Today', text:'Promising to keep choosing you.'},
+    ];
+
+    const LETTER_TEXT = `Oh you, my sunshine. Oh you, my dazzling light. Missing you is the hardest part of my day...`;
+
+    // ===== Hero Typewriter Effect =====
+    (function typewriter(){
+      const el = document.getElementById('typewriter');
+      const msg = 'You are my favorite person, my moonlight in the rain.';
+      el.textContent = '';
+      let i=0; const tick=()=>{ el.textContent += msg[i++]||''; if(i<=msg.length) requestAnimationFrame(tick);};
+      setTimeout(tick, 400);
+    })();
+
+    // ===== Render Gallery =====
+    const galleryEl = document.getElementById('gallery');
+    GALLERY.forEach((g,i)=>{
+      const img = document.createElement('img');
+      img.src = g.src; img.alt = g.caption; img.loading = 'lazy';
+      img.addEventListener('click', ()=> openLightbox(i));
+      galleryEl.appendChild(img);
+    });
+
+    // ===== Render Timeline =====
+    const timelineEl = document.getElementById('timeline');
+    TIMELINE.forEach(ev=>{
+      const d = document.createElement('div'); d.className='event';
+      d.innerHTML = `<div class="when">${ev.when}</div><div>${ev.text}</div>`;
+      timelineEl.appendChild(d);
+    });
+
+    // ===== Footer Year =====
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ===== Copy Letter =====
+    function copyLetter(btn){
+      navigator.clipboard.writeText(LETTER_TEXT).then(()=>{
+        btn.textContent = 'Copied ✓'; setTimeout(()=>btn.textContent='Copy letter', 1500);
+      });
+    }
+
+    function openLetter(){
+      document.getElementById('letter').scrollIntoView({behavior:'smooth'});
+    }
+
+    // ===== Lightbox =====
+    let currentIndex = 0;
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const lbCap = document.getElementById('lightbox-caption');
+
+    function openLightbox(i){ currentIndex=i; loadImg(); lb.classList.add('show'); }
+    function closeLightbox(){ lb.classList.remove('show'); }
+    function loadImg(){ const g = GALLERY[currentIndex]; lbImg.src=g.src; lbCap.textContent=g.caption; }
+    function prevImg(){ currentIndex = (currentIndex - 1 + GALLERY.length) % GALLERY.length; loadImg(); }
+    function nextImg(){ currentIndex = (currentIndex + 1) % GALLERY.length; loadImg(); }
+
+    // Close modals on backdrop click
+    document.querySelectorAll('.modal').forEach(m=>{
+      m.addEventListener('click', (e)=>{ if(e.target===m) m.classList.remove('show'); });
+    });
+
+    // ===== Secret Modal =====
+    const secret = document.getElementById('secret');
+    const secretBtn = document.getElementById('secretBtn');
+    const secretNote = document.getElementById('secretNote');
+    const secretCode = document.getElementById('secretCode');
+
+    secretBtn.addEventListener('click', ()=> toggleSecret(true));
+    function toggleSecret(show){ secret.classList.toggle('show', !!show); }
+
+    function unlockSecret(){
+      if(secretCode.value.trim() === '0909'){
+        secretNote.style.display='block';
+        confetti();
+      } else {
+        alert('Wrong code, try again 🙂');
+      }
+    }
+
+    // ===== Simple Confetti (emoji) =====
+    function confetti(){
+      for(let i=0;i<40;i++){
+        const s = document.createElement('div');
+        s.textContent = ['✨','💙','🌙','💫','🫶'][Math.floor(Math.random()*5)];
+        s.style.position='fixed';
+        s.style.left = Math.random()*100+'vw';
+        s.style.top = '-10vh';
+        s.style.fontSize = (16+Math.random()*24)+'px';
+        s.style.transition='transform 2.2s linear, opacity 2.2s linear';
+        s.style.zIndex=60;
+        document.body.appendChild(s);
+        requestAnimationFrame(()=>{
+          s.style.transform = `translateY(${110+Math.random()*20}vh) rotate(${Math.random()*360}deg)`;
+          s.style.opacity = 0.1 + Math.random()*0.5;
+        });
+        setTimeout(()=>s.remove(), 2300);
+      }
+    }
+
+    // ===== Music Toggle (autoplay blocked by browsers; user click required) =====
+    const musicBtn = document.getElementById('musicBtn');
+    const bgm = document.getElementById('bgm');
+    let playing=false;
+    musicBtn.addEventListener('click', async ()=>{
+      try{
+        if(!playing){ await bgm.play(); playing=true; musicBtn.textContent='❚❚ Pause Music'; }
+        else{ bgm.pause(); playing=false; musicBtn.textContent='♪ Music'; }
+      }catch(e){ alert('Add a music file first to enable this.'); }
+    });
+
+    // ===== Pretty Rain Animation (Canvas) =====
+    const canvas = document.getElementById('rain');
+    const ctx = canvas.getContext('2d');
+    let W, H, drops=[];
+    function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; drops = makeDrops(); }
+    addEventListener('resize', resize, {passive:true}); resize();
+
+    function makeDrops(){
+      const count = Math.min(180, Math.floor(W*H/8000));
+      const arr = [];
+      for(let i=0;i<count;i++){
+        arr.push({ x: Math.random()*W, y: Math.random()*H, len: 8+Math.random()*14, speed: 2+Math.random()*3, thick: .8+Math.random()*1.2 });
+      }
+      return arr;
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      // subtle fog
+      const grd = ctx.createLinearGradient(0,0,0,H);
+      grd.addColorStop(0,'rgba(11,18,32,0.0)');
+      grd.addColorStop(1,'rgba(11,18,32,0.35)');
+      ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
+
+      ctx.strokeStyle = 'rgba(180,210,255,.65)';
+      ctx.lineCap = 'round';
+      drops.forEach(d=>{
+        ctx.lineWidth = d.thick;
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x+1.5, d.y+d.len);
+        ctx.stroke();
+        d.y += d.speed*2.2; d.x += 0.6; // wind
+        if(d.y>H+20) { d.y = -20; d.x = Math.random()*W; }
+      });
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  </script>
+
+  <!--
+  ===================== HOW TO CUSTOMIZE =====================
+  1) Replace images in GALLERY above with your own links (Google Drive public links or Imgur or any CDN).
+  2) Edit TIMELINE dates/text to your real story.
+  3) Put your own letter in LETTER_TEXT and in the Letter section.
+  4) To add music, upload an mp3 somewhere and add a <source> inside <audio id="bgm">.
+  5) To change colors, tweak CSS variables at :root (top of <style>).
+  6) Deploy: save this as index.html and drop it into Netlify, Vercel, or GitHub Pages.
+  ============================================================
+  -->
+</body>
+</html>
